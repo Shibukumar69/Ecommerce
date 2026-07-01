@@ -1,0 +1,36 @@
+{
+  "short_name": "NexusShop",
+  "name": "NexusShop Premium Catalog",
+  "icons": [
+    {
+      "src": "https://img.icons8.com/color/48/shopping-cart.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "https://img.icons8.com/color/96/shopping-cart.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "https://img.icons8.com/color/144/shopping-cart.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    },
+    {
+      "src": "https://img.icons8.com/color/192/shopping-cart.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://img.icons8.com/color/512/shopping-cart.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#020617",
+  "theme_color": "#8b5cf6",
+  "display": "standalone",
+  "orientation": "portrait"
+}
