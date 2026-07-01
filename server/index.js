@@ -3,7 +3,9 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
+import bcrypt from 'bcryptjs';
 import connectDB from './config/db.js';
+import User from './models/User.js';
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 // Route imports
@@ -18,7 +20,38 @@ import wishlistRoutes from './routes/wishlistRoutes.js';
 dotenv.config();
 
 // Connect to MongoDB Database
-connectDB();
+await connectDB();
+
+const ensureDevUser = async () => {
+  if (process.env.NODE_ENV === 'production') {
+    return;
+  }
+
+  const devUser = {
+    name: 'shibu kumar',
+    email: 'shibukumar3935@gmail.com',
+    password: '1111Shibu',
+    role: 'user',
+  };
+
+  const existingUser = await User.findOne({ email: devUser.email }).select('+password');
+
+  if (!existingUser) {
+    await User.create(devUser);
+    console.log(`Seeded development login for ${devUser.email}`);
+    return;
+  }
+
+  const passwordMatches = await bcrypt.compare(devUser.password, existingUser.password);
+
+  if (!passwordMatches) {
+    existingUser.password = devUser.password;
+    await existingUser.save();
+    console.log(`Reset development login password for ${devUser.email}`);
+  }
+};
+
+await ensureDevUser();
 
 const app = express();
 
