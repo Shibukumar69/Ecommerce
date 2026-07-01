@@ -63,13 +63,25 @@ const allowedOrigins = [
   'http://127.0.0.1:5173',
   'http://127.0.0.1:5174'
 ];
+
+if (process.env.CLIENT_URL && process.env.CLIENT_URL !== '*') {
+  allowedOrigins.push(process.env.CLIENT_URL);
+}
+
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error('Not allowed by CORS'));
+    // If CLIENT_URL is '*' in env, allow any origin dynamically to support credentials
+    if (process.env.CLIENT_URL === '*') {
+      return callback(null, true);
     }
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    }
+    // Dynamically allow all Vercel domains
+    if (origin.endsWith('.vercel.app') || origin.startsWith('https://ecommerce-')) {
+      return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS'));
   },
   credentials: true,
 }));
