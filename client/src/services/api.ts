@@ -1,6 +1,10 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5005/api';
+const isProduction = import.meta.env.PROD;
+
+const API_URL = isProduction 
+  ? 'https://ecommerce-1-10sc.onrender.com/api' 
+  : 'http://127.0.0.1:5005/api';
 
 const api = axios.create({
   baseURL: API_URL,
